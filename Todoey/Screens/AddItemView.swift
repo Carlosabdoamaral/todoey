@@ -13,6 +13,7 @@ struct AddItemView: View {
     @StateObject private var dataController = DataController()
     @State private var t : String = ""
     @State private var errorMessage : String = ""
+    @State private var added : Bool = false
     
     var body: some View {
         ZStack {
@@ -36,12 +37,20 @@ struct AddItemView: View {
                         item.checked = false
                         
                         try? db.save()
+                        self.added = true
                     }
                 }
+                .padding()
                 
                 Spacer()
             }
             .navigationTitle("Add Item")
+            .alert(isPresented: $added) {
+                Alert(
+                    title: Text("Success"),
+                    message: Text("Your item was add successfuly.")
+                )
+            }
         }
     }
 }
